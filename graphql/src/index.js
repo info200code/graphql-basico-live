@@ -1,73 +1,34 @@
-const { ApolloServer, gql } = require("apollo-server");
-const faker = require("faker");
-
-let data = [
-  {
-    id: 1,
-    name: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    email: faker.internet.email(),
-  },
-  {
-    id: 2,
-    name: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    email: faker.internet.email(),
-  },
-];
+import { ApolloServer, gql } from "apollo-server";
+import { usuarios } from "./data";
 
 const typeDefs = gql`
-  type User {
+  type Usuario {
     id: ID!
-    firstName: String!
-    lastName: String!
+    username: String!
     email: String
-    url: String
+    estado: EstadoUsuario
+    profile: Int
+  }
+
+  enum EstadoUsuario {
+    ACTIVO
+    PENDIENTE_ACTIVAR
+    DESACTIVADO
   }
 
   type Query {
-    hello: String
-    users: [User]
-    user(id: ID!): User
-  }
-
-  input UserInput {
-    firstName: String!
-    lastName: String!
-    email: String
-  }
-
-  type Mutation {
-    addUser(user: UserInput!): User
+    usuarios: [Usuario]
   }
 `;
 
 const resolvers = {
   Query: {
-    hello: () => "Hello world!",
-    users: () => data,
-    user: (info, args) => data.find((item) => String(item.id) === args.id),
+    usuarios: () => usuarios,
   },
-  Mutation: {
-    addUser: (info, args, context) => {
-      const user = {
-        ...args.user,
-        name: args.user.firstName,
-        id: data.length + 1,
-      };
-
-      delete user.firstName;
-
-      data.push(user);
-
-      return user;
-    },
-  },
-  User: {
-    url: (info, args, context) => {
-      return info.name + "-" + info.lastName;
-    },
-    firstName: (info) => info.name,
+  EstadoUsuario: {
+    ACTIVO: 1,
+    PENDIENTE_ACTIVAR: 2,
+    DESACTIVADO: 3,
   },
 };
 
