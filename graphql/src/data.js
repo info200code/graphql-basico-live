@@ -23,3 +23,29 @@ export const usuarios = [
     profile: 1, // cliente
   },
 ];
+
+export const clientes = [
+  {
+    nombre: faker.name.firstName(),
+    telefono: faker.phone.phoneNumber(),
+    email: faker.internet.email(),
+    direccion: faker.random.words(),
+    userId: 1,
+  },
+  {
+    nombre: faker.name.firstName(),
+    telefono: faker.phone.phoneNumber(),
+    email: faker.internet.email(),
+    direccion: faker.random.words(),
+    userId: 3,
+  },
+];
+
+export const empleados = [
+  {
+    nombre: faker.name.firstName(),
+    apellido: faker.name.lastName(),
+    telefono: faker.phone.phoneNumber(),
+    userId: 2,
+  },
+];
