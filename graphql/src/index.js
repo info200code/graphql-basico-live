@@ -7,7 +7,7 @@ const typeDefs = gql`
     username: String!
     email: String
     estado: EstadoUsuario
-    profile: Int
+    profile: UsuarioProfile
   }
 
   enum EstadoUsuario {
@@ -16,8 +16,17 @@ const typeDefs = gql`
     DESACTIVADO
   }
 
+  enum UsuarioProfile {
+    CLIENTE
+    EMPLEADO
+  }
+
   type Query {
     usuarios: [Usuario]
+  }
+
+  type Mutation {
+    modificarEstado(estado: EstadoUsuario): Boolean
   }
 `;
 
@@ -25,10 +34,20 @@ const resolvers = {
   Query: {
     usuarios: () => usuarios,
   },
+  Mutation: {
+    modificarEstado: (_, args) => {
+      console.log(args);
+      return true;
+    },
+  },
   EstadoUsuario: {
     ACTIVO: 1,
     PENDIENTE_ACTIVAR: 2,
     DESACTIVADO: 3,
+  },
+  UsuarioProfile: {
+    CLIENTE: 1,
+    EMPLEADO: 2,
   },
 };
 
